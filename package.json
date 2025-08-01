@@ -1,0 +1,24 @@
+{
+  "name": "couchdb-helper",
+  "version": "1.0.0",
+  "description": "A simple CLI to perfom bulk operations for CouchDB",
+  "main": "cdb.js",
+  "bin": {
+    "cdb": "./bin/cdb.js"
+  },
+  "scripts": {
+    "start": "node bin/cdb.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "couchdb",
+    "console",
+    "cli"
+  ],
+  "author": "Bradley Deans",
+  "dependencies": {
+    "commander": "^14.0.0",
+    "dotenv": "^17.2.1",
+    "nano": "^10.1.4"
+  }
+}

@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "cdb (local)",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/cdb.js",
+            "env": {
+                "NODE_ENV": "local"
+            },
+            "args": ["insert", "test.json"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "name": "cdb (staging)",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/cdb.js",
+            "env": {
+                "NODE_ENV": "staging"
+            },
+            "args": ["insert", "question-translations.json"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "skipFiles": ["<node_internals>/**"]
+        }
+    ]
+}

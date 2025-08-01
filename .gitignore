@@ -1,0 +1,5 @@
+node_modules/
+**/.env.*
+test.json
+info-translations.json
+question-translations.json
