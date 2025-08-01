@@ -1,8 +1,8 @@
-import use from './couch-client.js';
+import couchClient from './couch-client.js';
 
 export async function uploadDocument(document, database = null) {
   return new Promise((resolve, reject) => {
-    const couch = database ? use(database) : couchClient;
+    const couch = database ? couchClient.use(database) : couchClient;
     
     couch.insert(document, (err, body) => {
       if (err) {
@@ -24,7 +24,7 @@ export async function uploadDocument(document, database = null) {
 
 export async function bulkUploadDocuments(documents, database = null) {
   return new Promise((resolve, reject) => {
-    const couch = database ? use(database) : couchClient;
+    const couch = database ? couchClient.use(database) : couchClient;
     const bulkPayload = {
       docs: documents
     };
