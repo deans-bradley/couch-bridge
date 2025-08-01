@@ -1,5 +1,5 @@
-const nano = require('nano');
-const config = require('../config/config');
+import nano from 'nano';
+import config from '../config/config.js';
 
 const token = Buffer.from(`${config.couchdb.username}:${config.couchdb.password}`).toString('base64');
 
@@ -20,4 +20,4 @@ defaultCouch.use = (databaseName) => {
 
 defaultCouch.server = couchConfig;
 
-module.exports = defaultCouch;
+export default defaultCouch;

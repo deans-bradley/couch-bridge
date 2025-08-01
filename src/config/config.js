@@ -1,7 +1,11 @@
-const path = require("path");
-const dotenv = require("dotenv");
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+import { config as _config } from "dotenv";
 
-dotenv.config({ path: path.resolve(__dirname, `./.env`) });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+_config({ path: resolve(__dirname, `./.env`) });
 
 const config = {
   couchdb: {
@@ -12,4 +16,4 @@ const config = {
   }
 };
 
-module.exports = config;
+export default config;

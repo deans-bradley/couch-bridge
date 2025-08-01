@@ -1,10 +1,10 @@
-const fs = require('fs').promises;
-const chalk = require('chalk');
-const couchService = require('./util/couch-service');
+import { promises as fs } from 'fs';
+import chalk from 'chalk';
+import { bulkUploadDocuments } from './util/couch-service.js';
 
 const DEFAULT_BATCH_SIZE = 100;
 
-async function uploadDocuments(inputFile, options = {}) {
+export async function uploadDocuments(inputFile, options = {}) {
     const batchSize = options.batchSize || DEFAULT_BATCH_SIZE;
     const database = options.database;
     
@@ -44,7 +44,7 @@ async function uploadDocuments(inputFile, options = {}) {
             console.log(chalk.yellow(`\nProcessing batch ${batchNumber}/${batches.length} (${batch.length} documents)...`));
             
             try {
-                const response = await couchService.bulkUploadDocuments(batch, database);
+                const response = await bulkUploadDocuments(batch, database);
                 
                 totalSuccessful += response.results.successful.length;
                 totalFailed += response.results.failed.length;
@@ -109,5 +109,3 @@ async function uploadDocuments(inputFile, options = {}) {
         throw error;
     }
 }
-
-module.exports = { uploadDocuments };

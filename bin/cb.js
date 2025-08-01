@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const { Command } = require('commander');
-const chalk = require('chalk');
-const { uploadDocuments } = require('../src/app');
+import { Command } from 'commander';
+import chalk from 'chalk';
+import { uploadDocuments } from '../src/app.js';
 
 const program = new Command();
 
