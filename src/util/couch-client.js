@@ -12,5 +12,12 @@ const couchConfig = nano({
   }
 });
 
-const couch = couchConfig.db.use(config.couchdb.database);
-module.exports = couch;
+const defaultCouch = couchConfig.db.use(config.couchdb.database);
+
+defaultCouch.use = (databaseName) => {
+  return couchConfig.db.use(databaseName);
+};
+
+defaultCouch.server = couchConfig;
+
+module.exports = defaultCouch;
