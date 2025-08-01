@@ -1,10 +1,10 @@
 {
-  "name": "couchdb-helper",
+  "name": "couch-bridge",
   "version": "1.0.0",
   "description": "A simple CLI to perfom bulk operations for CouchDB",
   "main": "cb.js",
   "bin": {
-    "cdb": "./bin/cb.js"
+    "cb": "./bin/cb.js"
   },
   "scripts": {
     "start": "node bin/cb.js",
