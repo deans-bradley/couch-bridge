@@ -69,3 +69,10 @@ export async function bulkUploadDocuments(documents, database = null) {
     });
   });
 }
+
+export async function downloadDocuments(database = null, view = null, includeDocs = false, limit = 100) {
+  return new Promise((resolve, reject) => {
+    const couch = database ? couchClient.use(database) : couchClient;
+    // TODO
+  });
+}

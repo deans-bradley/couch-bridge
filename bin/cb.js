@@ -35,6 +35,23 @@ program
     }
   });
 
+// TODO
+program
+  .command('save')
+  .description('Save documents from CouchDB to local file')
+  .option('-p, --path <path>', 'Custom path to save the result')
+  .option('-d, --database <name>', 'Database name (uses default from config if not specified)')
+  .option('-v, --view <view>', 'The name of the view in CouchDB')
+  .option('-i, --include', 'Add the `include_dos` query (default: false)', 'false')
+  .option('-l, --limit <limit>', 'The limit of results return (default: 100)', '100')
+  .action(async (input, options) => {
+    try {
+
+    } catch (error) {
+
+    }
+  });
+
 program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
