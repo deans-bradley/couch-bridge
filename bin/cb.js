@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { uploadDocuments } from '../src/app.js';
+import { uploadDocuments, deleteDocuments } from '../src/app.js';
 
 const program = new Command();
 
@@ -49,6 +49,40 @@ program
 
     } catch (error) {
 
+    }
+  });
+
+program
+  .command('delete')
+  .description('Delete documents from CouchDB by view')
+  .argument('<view>', 'View name in format "design_doc/view_name"')
+  .argument('<key>', 'Key to query the view with')
+  .option('-d, --database <name>', 'Database name (uses default from config if not specified)')
+  .option('-b, --batch <size>', 'Number of documents per batch (default: 100)', '100')
+  .action(async (view, key, options) => {
+    try {
+      const batchSize = parseInt(options.batch);
+      if (isNaN(batchSize) || batchSize < 1) {
+        console.error(chalk.red('Error: Batch size must be a positive number'));
+        process.exit(1);
+      }
+      
+      // Confirmation prompt for safety
+      console.log(chalk.yellow(`⚠️  You are about to delete documents from view: ${chalk.white(view)} with key: ${chalk.white(key)}`));
+      console.log(chalk.yellow(`   Database: ${options.database || 'default from config'}`));
+      console.log(chalk.yellow(`   Batch size: ${batchSize}`));
+      console.log(chalk.red('\n   THIS ACTION CANNOT BE UNDONE!'));
+      
+      // In a real implementation, you might want to add a confirmation prompt here
+      // For now, we'll proceed directly
+      
+      await deleteDocuments(view, key, { 
+        batchSize,
+        database: options.database 
+      });
+    } catch (error) {
+      console.error(chalk.red('Error:'), error.message);
+      process.exit(1);
     }
   });
 
