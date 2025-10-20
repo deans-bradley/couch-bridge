@@ -3,5 +3,3 @@ node_modules/
 **/.env
 **/.env.*
 test.json
-info-translations.json
-question-translations.json
