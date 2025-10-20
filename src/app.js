@@ -121,7 +121,6 @@ export async function deleteDocuments(view, key, options = {}) {
   try {
     console.log(chalk.blue(`Starting bulk delete from view: ${chalk.white(view)} with key: ${chalk.white(key)}${database ? ` in database: ${chalk.white(database)}` : ''}...`));
 
-    // First, get all documents from the view
     console.log(chalk.yellow('Fetching documents from view...'));
     const viewResponse = await getDocumentsByView(database, view, key);
     
