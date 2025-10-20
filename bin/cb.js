@@ -67,14 +67,8 @@ program
         process.exit(1);
       }
       
-      // Confirmation prompt for safety
-      console.log(chalk.yellow(`⚠️  You are about to delete documents from view: ${chalk.white(view)} with key: ${chalk.white(key)}`));
       console.log(chalk.yellow(`   Database: ${options.database || 'default from config'}`));
       console.log(chalk.yellow(`   Batch size: ${batchSize}`));
-      console.log(chalk.red('\n   THIS ACTION CANNOT BE UNDONE!'));
-      
-      // In a real implementation, you might want to add a confirmation prompt here
-      // For now, we'll proceed directly
       
       await deleteDocuments(view, key, { 
         batchSize,
