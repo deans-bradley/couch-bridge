@@ -5,7 +5,7 @@ import { config as _config } from "dotenv";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-_config({ path: resolve(__dirname, `./.env`) });
+_config({ path: resolve(__dirname, `./.env`), quiet: true });
 
 const config = {
   couchdb: {
