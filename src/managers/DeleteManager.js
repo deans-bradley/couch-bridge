@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import config from '../config/config.js';
-import { getDocumentsByView, bulkDeleteDocuments } from './util/couch-service.js';
+import { getDocumentsByView, bulkDeleteDocuments } from '../util/couch-service.js';
 
 class DeleteManager {
 
