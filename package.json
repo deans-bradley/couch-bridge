@@ -1,6 +1,6 @@
 {
   "name": "couch-bridge",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A powerful Node.js CLI tool to run efficient queries to CouchDB.",
   "main": "cb.js",
   "type": "module",
