@@ -1,6 +1,6 @@
 # CouchBridge
 
-A powerful Node.js CLI tool for efficient bulk operations with CouchDB. CouchBridge makes it easy to upload large datasets to CouchDB with intelligent batching, detailed progress reporting, and flexible database selection.
+A powerful Node.js CLI tool to run efficient queries to CouchDB.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js->=22.14.0-green.svg)](https://nodejs.org/)
@@ -8,13 +8,10 @@ A powerful Node.js CLI tool for efficient bulk operations with CouchDB. CouchBri
 
 ## Features
 
-- **True Bulk Operations** - Uses CouchDB's `_bulk_docs` endpoint for maximum performance
-- **Intelligent Batching** - Automatically splits large datasets into manageable batches
-- **Colored Console Output** - Easy-to-read progress reporting with chalk
+- **Bulk Operations** - Uses CouchDB's `_bulk_docs` endpoint for maximum performance
+- **Batching** - Automatically splits large datasets into manageable batches
 - **Database Selection** - Upload to any database, with configurable defaults
 - **Detailed Progress Tracking** - Batch-by-batch progress with success/failure counts
-- **Robust Error Handling** - Continues processing even when individual batches fail
-- **High Performance** - 100x faster than individual document uploads for large datasets
 
 ## Installation
 
@@ -46,18 +43,21 @@ COUCHDB_DATABASE=your_default_database
 ## Usage
 
 ### Basic Upload
+
 Upload documents from a JSON file to your default database:
 ```bash
 cb insert documents.json
 ```
 
 ### Upload to Specific Database
+
 ```bash
 cb insert documents.json --database my_other_db
 cb insert documents.json -d production_data
 ```
 
 ### Custom Batch Size
+
 Adjust batch size for performance tuning or memory constraints:
 ```bash
 # Larger batches for better performance (default: 100)
@@ -68,6 +68,7 @@ cb insert documents.json -b 25
 ```
 
 ### Combined Options
+
 ```bash
 cb insert data.json -d test_db -b 200
 ```
@@ -135,6 +136,7 @@ cb insert large-file.json -d test_db -b 500
 ## Output Examples
 
 ### Successful Upload
+
 ```
 Starting bulk upload of 350 documents (batch size: 100) to database: my_database...
 Processing 4 batch(es)...
@@ -210,24 +212,6 @@ Error: JavaScript heap out of memory
 - Reduce batch size: `cb insert file.json -b 50`
 - Process file in smaller chunks
 
-## Project Structure
-
-```
-couch-bridge/
-├── bin/
-│   └── cb.js                 # CLI entry point
-├── src/
-│   ├── config/
-│   │   ├── .env             # Environment variables (optional)
-│   │   └── config.json      # CouchDB configuration
-│   ├── util/
-│   │   ├── couch-client.js  # CouchDB connection setup
-│   │   └── couch-service.js # Database operations
-│   └── app.js               # Core application logic
-├── package.json
-└── README.md
-```
-
 ## Dependencies
 
 - **commander** - CLI framework
@@ -241,30 +225,3 @@ couch-bridge/
 3. Commit your changes: `git commit -am 'Add feature'`
 4. Push to the branch: `git push origin feature-name`
 5. Submit a pull request
-
-## Future Features
-
-Potential enhancements for future versions:
-
-- **Export/Backup**: Bulk export documents from CouchDB
-- **Database Management**: Create, delete, and list databases
-- **Document Updates**: Bulk update existing documents
-- **CSV Support**: Import from CSV files
-- **Query Operations**: Execute Mango queries from CLI
-- **Replication**: Set up and manage database replication
-- **Progress Bars**: Visual progress indicators for large operations
-- **Dry Run Mode**: Preview operations without executing them
-
-## License
-
-MIT License - feel free to use and modify as needed.
-
-## Support
-
-If you encounter issues:
-1. Check the troubleshooting section above
-2. Verify your CouchDB connection and permissions
-3. Try reducing batch size for memory issues
-4. Check CouchDB logs for server-side errors
-
-For feature requests or bug reports, please create an issue in the project repository.
