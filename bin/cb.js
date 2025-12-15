@@ -1,4 +1,4 @@
-#!/usr/bin/cb.js
+#!/usr/bin/env node
 
 import { program } from 'commander';
 import config from '../src/config/config.js';
