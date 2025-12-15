@@ -2,6 +2,10 @@
 
 A powerful Node.js CLI tool for efficient bulk operations with CouchDB. CouchBridge makes it easy to upload large datasets to CouchDB with intelligent batching, detailed progress reporting, and flexible database selection.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js->=22.14.0-green.svg)](https://nodejs.org/)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/deans-bradley/couch-bridge)
+
 ## Features
 
 - **True Bulk Operations** - Uses CouchDB's `_bulk_docs` endpoint for maximum performance
@@ -13,10 +17,6 @@ A powerful Node.js CLI tool for efficient bulk operations with CouchDB. CouchBri
 - **High Performance** - 100x faster than individual document uploads for large datasets
 
 ## Installation
-
-### Prerequisites
-- Node.js (v14 or higher)
-- Access to a CouchDB instance
 
 ### Setup
 
