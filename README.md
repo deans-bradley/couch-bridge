@@ -4,7 +4,7 @@ A powerful Node.js CLI tool for efficient CouchDB operations including bulk inse
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js->=22.14.0-green.svg)](https://nodejs.org/)
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](https://github.com/deans-bradley/couch-bridge)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](https://github.com/deans-bradley/couch-bridge)
 
 ## Features
 
