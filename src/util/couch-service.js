@@ -94,11 +94,7 @@ export async function getDocumentsByView(database = null, view, key) {
           error: err.error || err.message || err
         });
       } else {
-        const documents = body.rows.map(row => ({
-          _id: row.doc._id,
-          _rev: row.doc._rev,
-          _deleted: true
-        }));
+        const documents = body.rows.map(row => row.doc);
         
         resolve({
           success: true,
