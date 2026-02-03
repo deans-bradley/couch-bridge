@@ -1,6 +1,13 @@
 import chalk from 'chalk';
+import { Command } from 'commander';
 import { COMMAND, ARGUMENT, OPTION } from '../constants/description.js';
+import InsertManager from '../managers/InsertManager.js';
 
+/**
+ * 
+ * @param {Command} program
+ * @param {InsertManager} insertManager
+ */
 export function setupInsertCommand(program, insertManager) {
   const insertCommand = program;
   
@@ -13,12 +20,12 @@ export function setupInsertCommand(program, insertManager) {
     .action(async (input, options) => {
       try {
         const batchSize = parseInt(options.batchSize);
-        if (isNaN(batchSize) || batchSize < 1) {
+        if (!isNaN(batchSize) && batchSize < 1) {
           console.error(chalk.red('Error: Batch size must be a positive number'));
           process.exit(1);
         }
         
-        await insertManager.uploadDocuments(input, {
+        await insertManager.insert(input, {
           batchSize,
           database: options.database
         });
