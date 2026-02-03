@@ -4,7 +4,16 @@ import { getDocumentsByView, bulkDeleteDocuments } from '../util/couch-service.j
 
 class DeleteManager {
 
-  async delete(options = {}) {
+  /**
+   * @param {string} view
+   * @param {Object} options
+   * @param {string} options.key
+   * @param {number} options.batchSize
+   * @param {string} options.database
+   * @returns 
+   */
+  async delete(view, options = {}) {
+    const key = options.key;
     const batchSize = options.batchSize || config.batchSize;
     const database = options.database;
 
