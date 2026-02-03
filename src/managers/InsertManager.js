@@ -1,9 +1,17 @@
 import { promises as fs } from 'fs';
+import chalk from 'chalk';
 import config from '../config/config.js';
 import { bulkUploadDocuments } from '../util/couch-service.js';
 
 class InsertManager {
 
+  /**
+   * @param {string} inputFile
+   * @param {Object} options
+   * @param {number} options.batchSize
+   * @param {string} options.database
+   * @returns 
+   */
   async insert(inputFile, options = {}) {
     const batchSize = options.batchSize || config.batchSize;
     const database = options.database;
@@ -66,7 +74,6 @@ class InsertManager {
               });
             });
           }
-
         } catch (error) {
           console.error(chalk.red(`✗ Batch ${batchNumber} failed completely: ${error.message || error.error}`));
           totalFailed += batch.length;
