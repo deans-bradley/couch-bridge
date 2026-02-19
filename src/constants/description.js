@@ -15,6 +15,7 @@ const ARGUMENT = Object.freeze({
 const OPTION = Object.freeze({
   BATCH_SIZE: 'Number of documents per batch (default: 100)',
   DATABASE: 'Database name (uses default from config if not specified)',
+  GENERATE_IDS: 'Generate UUIDs for document _id fields',
   KEY: 'The key value to query the view',
   PROPERTY_VALUE: 'The property value'
 });
