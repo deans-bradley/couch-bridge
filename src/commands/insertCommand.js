@@ -17,6 +17,7 @@ export function setupInsertCommand(program, insertManager) {
     .argument('<input>', ARGUMENT.INPUT)
     .option('-b, --batch-size <size>', OPTION.BATCH_SIZE)
     .option('-d, --database <name>', OPTION.DATABASE)
+    .option('-g, --generate-ids', OPTION.GENERATE_IDS)
     .action(async (input, options) => {
       try {
         const batchSize = parseInt(options.batchSize);
@@ -27,7 +28,8 @@ export function setupInsertCommand(program, insertManager) {
         
         await insertManager.insert(input, {
           batchSize,
-          database: options.database
+          database: options.database,
+          generateIds: options.generateIds
         });
       } catch (error) {
         console.error(chalk.red('Error:'), error.message);
