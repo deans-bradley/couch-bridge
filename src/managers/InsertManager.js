@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs';
+import { randomUUID } from 'crypto';
 import chalk from 'chalk';
 import config from '../config/config.js';
 import { bulkUploadDocuments } from '../util/couch-service.js';
@@ -10,11 +11,13 @@ class InsertManager {
    * @param {Object} options
    * @param {number} options.batchSize
    * @param {string} options.database
+   * @param {boolean} options.generateIds
    * @returns 
    */
   async insert(inputFile, options = {}) {
     const batchSize = options.batchSize || config.batchSize;
     const database = options.database;
+    const generateIds = options.generateIds || false;
 
     try {
       await fs.access(inputFile);
@@ -30,6 +33,16 @@ class InsertManager {
 
       if (!Array.isArray(docs)) {
         throw new Error('JSON file must contain an array of documents');
+      }
+
+      // Generate UUIDs for documents if requested
+      if (generateIds) {
+        docs.forEach(doc => {
+          if (!doc._id) {
+            doc._id = randomUUID();
+          }
+        });
+        console.log(chalk.blue(`Generated UUIDs for documents missing _id field`));
       }
 
       console.log(chalk.blue(`Starting bulk upload of ${docs.length} documents (batch size: ${batchSize})${database ? ` to database: ${chalk.white(database)}` : ''}...`));
