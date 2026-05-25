@@ -10,17 +10,17 @@ const configDirectory = process.env.LOCALAPPDATA
 const configPath = join(configDirectory, 'config.json');
 
 const defaultConfig = {
-  version: '0.3.0',
-  couchdb: {
-    url: '',
-    username: '',
-    password: '',
-    database: ''
-  },
+  version: '0.4.0',
+  activeInstance: '',
+  instances: {},
   batchSize: 100
 };
 
-let config = { ...defaultConfig, couchdb: { ...defaultConfig.couchdb } };
+let config = { ...defaultConfig };
+
+function normalizeValue(value) {
+  return value == null ? '' : String(value).trim();
+}
 
 function loadConfig() {
   if (!existsSync(configPath)) {
@@ -30,14 +30,29 @@ function loadConfig() {
   const raw = readFileSync(configPath, 'utf8');
   const parsed = JSON.parse(raw || '{}');
 
-  config = {
+  const loaded = {
     ...defaultConfig,
     ...parsed,
-    couchdb: {
-      ...defaultConfig.couchdb,
-      ...(parsed.couchdb || {})
-    }
+    instances: typeof parsed.instances === 'object' && parsed.instances !== null ? { ...parsed.instances } : {}
   };
+
+  if (!loaded.activeInstance && parsed.couchdb && Object.keys(loaded.instances).length === 0) {
+    loaded.instances = {
+      default: {
+        url: normalizeValue(parsed.couchdb.url),
+        username: normalizeValue(parsed.couchdb.username),
+        password: normalizeValue(parsed.couchdb.password),
+        database: normalizeValue(parsed.couchdb.database)
+      }
+    };
+    loaded.activeInstance = 'default';
+  }
+
+  if (!loaded.activeInstance && Object.keys(loaded.instances).length > 0) {
+    loaded.activeInstance = Object.keys(loaded.instances)[0];
+  }
+
+  config = loaded;
 }
 
 function ensureConfigDirectory() {
@@ -50,43 +65,97 @@ export function ensureConfigFile() {
   if (!existsSync(configPath)) {
     ensureConfigDirectory();
     writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2) + '\n', 'utf8');
-    config = { ...defaultConfig, couchdb: { ...defaultConfig.couchdb } };
+    config = { ...defaultConfig };
   }
 }
 
+export function getActiveInstanceName() {
+  return config.activeInstance;
+}
+
+export function getActiveInstance() {
+  if (!config.activeInstance) {
+    return null;
+  }
+
+  return config.instances[config.activeInstance] || null;
+}
+
+export function getInstances() {
+  return { ...config.instances };
+}
+
+export function getInstance(instanceName) {
+  return config.instances[instanceName] || null;
+}
+
 export function validateConfig() {
+  const activeInstanceName = config.activeInstance;
   const missing = [];
 
-  if (!config.couchdb.url) {
+  if (!activeInstanceName) {
+    missing.push('ActiveInstance');
+    return missing;
+  }
+
+  const activeInstance = getActiveInstance();
+  if (!activeInstance) {
+    missing.push(`Instance "${activeInstanceName}"`);
+    return missing;
+  }
+
+  if (!activeInstance.url) {
     missing.push('CouchUrl');
   }
-  if (!config.couchdb.database) {
+  if (!activeInstance.database) {
     missing.push('DefaultDatabase');
   }
-  if (!config.couchdb.username) {
+  if (!activeInstance.username) {
     missing.push('CouchUsername');
   }
-  if (!config.couchdb.password) {
+  if (!activeInstance.password) {
     missing.push('CouchPassword');
   }
 
   return missing;
 }
 
-function normalizeValue(value) {
-  return value == null ? '' : String(value).trim();
-}
+export function saveConfig({ name, use, couchUrl, defaultDatabase, couchUsername, couchPassword } = {}) {
+  const instanceName = normalizeValue(name || config.activeInstance || 'default');
+  const nextInstances = { ...config.instances };
 
-export function saveConfig(updates = {}) {
+  if (!nextInstances[instanceName]) {
+    nextInstances[instanceName] = {
+      url: '',
+      username: '',
+      password: '',
+      database: ''
+    };
+  }
+
+  const instance = nextInstances[instanceName];
+  nextInstances[instanceName] = {
+    url: couchUrl != null ? normalizeValue(couchUrl) : instance.url,
+    username: couchUsername != null ? normalizeValue(couchUsername) : instance.username,
+    password: couchPassword != null ? normalizeValue(couchPassword) : instance.password,
+    database: defaultDatabase != null ? normalizeValue(defaultDatabase) : instance.database
+  };
+
+  let activeInstance = config.activeInstance;
+  if (use) {
+    const normalizedUse = normalizeValue(use);
+    if (!nextInstances[normalizedUse]) {
+      throw new Error(`Instance "${normalizedUse}" does not exist. Create it with --name first.`);
+    }
+    activeInstance = normalizedUse;
+  } else if (!activeInstance) {
+    activeInstance = instanceName;
+  }
+
   const nextConfig = {
     ...config,
-    couchdb: {
-      ...config.couchdb,
-      url: updates.CouchUrl != null ? normalizeValue(updates.CouchUrl) : config.couchdb.url,
-      username: updates.CouchUsername != null ? normalizeValue(updates.CouchUsername) : config.couchdb.username,
-      password: updates.CouchPassword != null ? normalizeValue(updates.CouchPassword) : config.couchdb.password,
-      database: updates.DefaultDatabase != null ? normalizeValue(updates.DefaultDatabase) : config.couchdb.database
-    }
+    activeInstance,
+    instances: nextInstances
   };
 
   ensureConfigDirectory();
