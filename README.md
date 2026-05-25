@@ -35,20 +35,33 @@ A powerful Node.js CLI tool for efficient CouchDB operations including bulk inse
 
 ## Configuration
 
-Create your configuration using a `.env` file in the `src/config/` directory:
+CouchBridge stores CLI-managed settings in a JSON file at:
 
-```env
-COUCHDB_URL=http://localhost:5984
-COUCHDB_USERNAME=admin
-COUCHDB_PASSWORD=your_password
-COUCHDB_DATABASE=your_default_database
+- Windows: `%LOCALAPPDATA%\couch-bridge\config.json`
+- macOS/Linux: `~/.config/couch-bridge/config.json`
+
+You can create or update config values with the new `config` command.
+
+**Configuration options:**
+- `CouchUrl` - Your CouchDB server URL
+- `DefaultDatabase` - Default CouchDB database name
+- `CouchUsername` - CouchDB username for authentication
+- `CouchPassword` - CouchDB password for authentication
+
+Use the CLI command:
+
+```bash
+cb config --couch-url http://localhost:5984 \
+  --default-database your_default_database \
+  --couch-username admin \
+  --couch-password your_password
 ```
 
-**Configuration Options:**
-- `COUCHDB_URL` - Your CouchDB server URL
-- `COUCHDB_USERNAME` - CouchDB username for authentication
-- `COUCHDB_PASSWORD` - CouchDB password for authentication  
-- `COUCHDB_DATABASE` - Default database name (can be overridden with `-d` option)
+To view current settings:
+
+```bash
+cb config --show
+```
 
 ## Usage
 
@@ -390,7 +403,6 @@ Error: No documents found matching criteria
 - **commander** - CLI framework and command parsing
 - **nano** - CouchDB client library
 - **chalk** - Colored console output and formatting
-- **dotenv** - Environment variable configuration management
 
 ## Contributing
 
