@@ -1,11 +1,11 @@
 import nano from 'nano';
-import config from '../config/config.js';
+import config, { getActiveInstance } from '../config/config.js';
 
-function createClient() {
-  const token = Buffer.from(`${config.couchdb.username}:${config.couchdb.password}`).toString('base64');
+function createClient(instance) {
+  const token = Buffer.from(`${instance.username}:${instance.password}`).toString('base64');
 
   const couchConfig = nano({
-    url: config.couchdb.url,
+    url: instance.url,
     requestDefaults: {
       headers: {
         Authorization: `Basic ${token}`
@@ -13,22 +13,24 @@ function createClient() {
     }
   });
 
-  const defaultCouch = couchConfig.db.use(config.couchdb.database);
+  const defaultCouch = couchConfig.db.use(instance.database);
   defaultCouch.use = (databaseName) => couchConfig.db.use(databaseName);
   defaultCouch.server = couchConfig;
   return defaultCouch;
 }
 
-let couchClient = null;
-
 function ensureClient() {
-  if (!couchClient) {
-    if (!config.couchdb.url || !config.couchdb.username || !config.couchdb.password || !config.couchdb.database) {
-      throw new Error('CouchDB client is not configured. Run `cb config` to set CouchUrl, CouchUsername, CouchPassword, and DefaultDatabase.');
-    }
-    couchClient = createClient();
+  const activeInstance = getActiveInstance();
+
+  if (!config.activeInstance || !activeInstance) {
+    throw new Error('No active CouchDB instance is configured. Run `cb config --list` and `cb config --use <name>` to select an active instance.');
   }
-  return couchClient;
+
+  if (!activeInstance.url || !activeInstance.username || !activeInstance.password || !activeInstance.database) {
+    throw new Error('The active CouchDB instance is missing required settings. Run `cb config --show` and update the active instance.');
+  }
+
+  return createClient(activeInstance);
 }
 
 const proxy = new Proxy({}, {
