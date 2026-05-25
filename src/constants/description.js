@@ -23,6 +23,9 @@ const OPTION = Object.freeze({
   DEFAULT_DATABASE: 'Default CouchDB database name',
   COUCH_USERNAME: 'CouchDB username',
   COUCH_PASSWORD: 'CouchDB password',
+  INSTANCE_NAME: 'Name for the CouchDB instance',
+  USE_INSTANCE: 'Switch to the named CouchDB instance',
+  LIST: 'List configured CouchDB instances',
   SHOW: 'Show current configuration without updating it'
 });
 
