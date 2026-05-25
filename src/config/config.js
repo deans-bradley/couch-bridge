@@ -10,7 +10,7 @@ const configDirectory = process.env.LOCALAPPDATA
 const configPath = join(configDirectory, 'config.json');
 
 const defaultConfig = {
-  version: '0.2.3',
+  version: '0.3.0',
   couchdb: {
     url: '',
     username: '',
